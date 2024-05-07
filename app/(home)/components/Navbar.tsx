@@ -23,7 +23,7 @@ export default function Navbar() {
   return (
     <nav className="py-5 px-10 flex justify-between fixed top-0 w-full bg-transparent backdrop-blur-sm z-50">
       <Link href="#top">
-        <h1 className="text-4xl font-bold underline underline-offset-8 decoration-red-400 -rotate-3 cursor-pointer">
+        <h1 className="text-4xl font-bold underline underline-offset-8 decoration-yellow-300 -rotate-3 cursor-pointer">
           Maikī
         </h1>
       </Link>

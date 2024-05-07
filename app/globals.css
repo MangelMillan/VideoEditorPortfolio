@@ -76,7 +76,7 @@
 }
 @media (max-width: 1021px) {
   .spotlight {
-    opacity: 0.4 !important;
+    opacity: 0.15 !important;
   }
 }
 @media (max-width: 600px) {
@@ -88,4 +88,26 @@
   color: #ffffff;
   text-shadow: 0 0 3px #b19999, 0 0 3px #9b9b9b, 0 0 5px #9c788b,
     0 0 5px #868686, 0 0 5px #646464, 0 0 3px #ffffff;
+}
+
+/* Personaliza la barra de desplazamiento */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #00000055;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #34343488;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffc24767;
+}
+/* Personaliza el color del selector de texto */
+::selection {
+  background: #c8b7ff; /* Cambia esto a tu color preferido */
+  color: rgb(255, 255, 255); /* Cambia esto a tu color preferido */
 }
