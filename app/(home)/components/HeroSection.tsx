@@ -2,10 +2,37 @@
 import { motion } from "framer-motion";
 import { HeroHighlight, Highlight } from "@/components/ui/highlight";
 import { HoverBorderGradient } from "@/components/ui/hoverborder";
+import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { FiDownload } from "react-icons/fi";
 import Link from "next/link";
 
+const DummyContent = () => {
+  return (
+    <>
+      {[...new Array(1).fill(1)].map((_, index) => {
+        return (
+          <div
+            key={"dummy-content" + index}
+            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
+          >
+            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+              <span className="font-bold text-neutral-700 dark:text-neutral-200">
+                Videos editados usando Adobe Premiere Pro y After Effects.
+              </span>{" "}
+              por Miguel Millán
+            </p>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
 export function HeroSection() {
+  const cards = data.map((card, index) => (
+    <Card key={card.src} card={card} index={index} />
+  ));
+
   return (
     <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0">
       <div className="absolute inset-0 backdrop-filter backdrop-blur bg-gradient-to-circle from-transparent to-white opacity-50 pointer-events-none"></div>
@@ -27,7 +54,7 @@ export function HeroSection() {
               <FiDownload />
               <Link
                 target="_blank"
-                download="CV miguel millan"
+                download="miguel millan CV"
                 href={"/Miguel Millán.pdf"}
               >
                 <span>Download CV</span>{" "}
@@ -36,17 +63,30 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex justify-center items-center h-[40%]">
-        <div className="video-container w-3/4  md:h-full">
-          <iframe
-            src="https://www.youtube.com/embed/FEGdwlyg1Kk"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full"
-          ></iframe>
-        </div>
+      <div className="w-full md:w-1/2 flex justify-center items-center h-full">
+        <Carousel items={cards} />
       </div>
     </div>
   );
 }
+
+const data = [
+  {
+    category: "Clip de youtube",
+    title: "Extractos de Podcast",
+    src: "/videos/Tayu.mp4",
+    content: <DummyContent />,
+  },
+  {
+    category: "Clip de twitch",
+    title: "Extractos de Streams",
+    src: "/videos/3Nriku.mp4",
+    content: <DummyContent />,
+  },
+  {
+    category: "Clip de youtube",
+    title: "Extractos de videos",
+    src: "/videos/Demo Reel.mp4",
+    content: <DummyContent />,
+  },
+];
