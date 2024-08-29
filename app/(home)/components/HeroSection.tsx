@@ -79,15 +79,15 @@ const data = [
     content: <DummyContent />,
   },
   {
-    category: "Clip de twitch",
-    title: "Extractos de Streams",
-    src: "/videos/tayu.mp4",
-    content: <DummyContent />,
-  },
-  {
     category: "Clip de youtube",
     title: "Extractos de Podcast",
     src: "/videos/Demo Reel.mp4",
+    content: <DummyContent />,
+  },
+  {
+    category: "Clip de twitch",
+    title: "Extractos de Streams",
+    src: "/videos/tayu.mp4",
     content: <DummyContent />,
   },
 ];
