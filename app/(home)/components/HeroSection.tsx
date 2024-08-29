@@ -87,7 +87,7 @@ const data = [
   {
     category: "Clip de twitch",
     title: "Extractos de Streams",
-    src: "/videos/tayu.mp4",
+    src: "/videos/Tayu.mp4",
     content: <DummyContent />,
   },
 ];
