@@ -20,7 +20,7 @@ export default function page() {
           <HeroSection />
           <div className="max-w-7x1 mx-auto p-5 mt-20">
             <Phrase />
-            <BentoGridDemo />
+            {/* <BentoGridDemo /> */}
             <Footer />
           </div>
         </div>

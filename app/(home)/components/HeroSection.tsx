@@ -54,8 +54,8 @@ export function HeroSection() {
               <FiDownload />
               <Link
                 target="_blank"
-                download="miguel millan CV"
-                href={"/Miguel Millán.pdf"}
+                download="Miguel Millán"
+                href={"/Miguel Millán CV.pdf"}
               >
                 <span>Download CV</span>{" "}
               </Link>
@@ -73,19 +73,20 @@ export function HeroSection() {
 const data = [
   {
     category: "Clip de youtube",
-    title: "Extractos de Podcast",
-    src: "/videos/Tayu.mp4",
+    title: "Extractos de videos",
+    src: "/videos/3Nriku.mp4",
+
     content: <DummyContent />,
   },
   {
     category: "Clip de twitch",
     title: "Extractos de Streams",
-    src: "/videos/3Nriku.mp4",
+    src: "/videos/tayu.mp4",
     content: <DummyContent />,
   },
   {
     category: "Clip de youtube",
-    title: "Extractos de videos",
+    title: "Extractos de Podcast",
     src: "/videos/Demo Reel.mp4",
     content: <DummyContent />,
   },
