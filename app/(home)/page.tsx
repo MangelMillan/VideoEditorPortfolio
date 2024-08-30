@@ -18,8 +18,10 @@ export default function page() {
           {" "}
           <Navbar />
           <HeroSection />
-          <div className="max-w-7x1 mx-auto p-5 mt-20">
-            <Phrase />
+          <div className="max-w-7x1 mx-auto p-5 m-4">
+            <div className="">
+              <Phrase />{" "}
+            </div>
             {/* <BentoGridDemo /> */}
             <Footer />
           </div>

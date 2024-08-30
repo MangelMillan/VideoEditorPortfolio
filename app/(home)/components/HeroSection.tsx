@@ -63,7 +63,7 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex justify-center items-center h-full">
+      <div className="w-full md:w-1/2 flex justify-center items-center h-full ">
         <Carousel items={cards} />
       </div>
     </div>
