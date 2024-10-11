@@ -17,9 +17,9 @@ const DummyContent = () => {
           >
             <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
               <span className="font-bold text-neutral-700 dark:text-neutral-200">
-                Videos editados usando Adobe Premiere Pro y After Effects.
+                Edited using Premiere pro and After effects.
               </span>{" "}
-              por Miguel Millán
+              By Miguel Millán
             </p>
           </div>
         );
@@ -88,6 +88,12 @@ const data = [
     category: "Clip de twitch",
     title: "Extractos de Streams",
     src: "/videos/Tayu.mp4",
+    content: <DummyContent />,
+  },
+  {
+    category: "Promoción",
+    title: "Cliente",
+    src: "/videos/Dojo Masters X.mp4",
     content: <DummyContent />,
   },
 ];
