@@ -72,28 +72,34 @@ export function HeroSection() {
 
 const data = [
   {
-    category: "Clip de youtube",
+    category: "Youtube clip",
     title: "Extractos de videos",
     src: "/videos/3Nriku.mp4",
 
     content: <DummyContent />,
   },
   {
-    category: "Clip de youtube",
+    category: "Youtube clip",
     title: "Extractos de Podcast",
     src: "/videos/Demo Reel.mp4",
     content: <DummyContent />,
   },
   {
-    category: "Clip de twitch",
+    category: "Twitch clip",
     title: "Extractos de Streams",
     src: "/videos/Tayu.mp4",
     content: <DummyContent />,
   },
   {
-    category: "Promoción",
+    category: "Ad",
     title: "Cliente",
     src: "/videos/Dojo Masters X.mp4",
+    content: <DummyContent />,
+  },
+  {
+    category: "Youtube clip",
+    title: "Extracto de video",
+    src: "/videos/tayy.mp4",
     content: <DummyContent />,
   },
 ];
