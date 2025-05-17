@@ -7,6 +7,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import Phrase from "./components/Phrase";
 import { BentoGridDemo } from "./components/BentoGrid";
 import Footer from "./components/Footer";
+import VideoFormatSelector from "./components/VideoFormatSelector";
 
 export default function page() {
   return (
@@ -20,8 +21,9 @@ export default function page() {
           <HeroSection />
           <div className="max-w-7x1 mx-auto p-5 m-4">
             <div className="">
-              <Phrase />{" "}
+              
             </div>
+            <VideoFormatSelector />
             {/* <BentoGridDemo /> */}
             <Footer />
           </div>

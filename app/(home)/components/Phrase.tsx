@@ -6,7 +6,7 @@ const author = `-Jean-Luc Godard, French filmmaker`;
 
 export default function Phrase() {
   return (
-    <div className="mx-10 justify-between text-center mt-2">
+    <div className="mx-10 justify-between text-center mt-2 mb-16">
       <TextGenerateEffect
         className="glowing-text italic font-bold  hover:not-italic"
         words={phrase}

@@ -72,34 +72,40 @@ export function HeroSection() {
 
 const data = [
   {
-    category: "Youtube clip",
-    title: "Extractos de videos",
-    src: "/videos/3Nriku.mp4",
+    category: "",
+    title: "Creator: TayluSs  Creator: Enriku",
+    src: "/videos/adtay.mp4",
 
     content: <DummyContent />,
   },
   {
-    category: "Youtube clip",
-    title: "Extractos de Podcast",
-    src: "/videos/Demo Reel.mp4",
+    category: "",
+    title: "Creator: Enriku",
+    src: "/videos/3Nriku.mp4",
     content: <DummyContent />,
   },
   {
-    category: "Twitch clip",
-    title: "Extractos de Streams",
+    category: "",
+    title: "Creator: TayluSs",
     src: "/videos/Tayu.mp4",
     content: <DummyContent />,
   },
   {
-    category: "Ad",
-    title: "Cliente",
+    category: "",
+    title: "Creator: Cinta Negra Esports",
     src: "/videos/Dojo Masters X.mp4",
     content: <DummyContent />,
   },
   {
-    category: "Youtube clip",
-    title: "Extracto de video",
-    src: "/videos/tayy.mp4",
+    category: "",
+    title: "Creator: KaroEmpowerment",
+    src: "/videos/Karo.mp4",
+    content: <DummyContent />,
+  },
+  {
+    category: "",
+    title: "Creator: GreenerWear",
+    src: "/videos/Greener.mp4",
     content: <DummyContent />,
   },
 ];
