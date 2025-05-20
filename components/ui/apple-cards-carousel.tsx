@@ -282,7 +282,13 @@ export const Card = ({
             autoPlay
             muted
             loop
+            playsInline
+            preload="metadata"
             className="absolute z-10 inset-0 object-cover"
+            onLoadedData={(e) => {
+              const video = e.target as HTMLVideoElement;
+              video.playbackRate = 0.5; // Slower playback for better performance
+            }}
           />
         ) : (
           <BlurImage
@@ -290,6 +296,8 @@ export const Card = ({
             alt={card.title}
             fill
             className="object-cover absolute z-10 inset-0"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={index === 0}
           />
         )}
       </motion.button>

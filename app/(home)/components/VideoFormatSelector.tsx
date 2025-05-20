@@ -88,26 +88,49 @@ const VideoFormatSelector = () => {
           padding-bottom: 1rem;
           margin-bottom: 1.5rem;
         }
-      `}</style>
-      <style jsx>{`
-        @media (max-width: 640px) {
-          .card-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            margin: 0 auto;
-            gap: 60px
+        
+        @media (max-width: 1200px) {
+          .card-left {
+            width: 400px !important;
+            height: 225px !important;
+          }
+          
+          .card-right {
+            width: 225px !important;
+            height: 400px !important;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .card-left {
+            width: 320px !important;
+            height: 180px !important;
+          }
+          
+          .card-right {
+            width: 180px !important;
+            height: 320px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .card-left {
+            width: 280px !important;
+            height: 158px !important;
+          }
+          
+          .card-right {
+            width: 158px !important;
+            height: 280px !important;
           }
         }
       `}</style>
-      <div className="text-center mb-16">
+      <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
         <div className="flex flex-wrap justify-center">
           {titleWords.map((word, index) => (
             <motion.span
               key={index}
-              className="text-4xl font-bold text-white mx-2 my-1"
+              className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mx-1 sm:mx-2 my-1"
               variants={wordAnimation}
               initial="hidden"
               animate="visible"
@@ -121,83 +144,76 @@ const VideoFormatSelector = () => {
           ))}
         </div>
       </div>
-      <div className={`flex flex-col md:flex-row justify-center items-center md:space-x-16 lg:space-x-32 xl:space-x-64 space-y-16 md:space-y-0 my-12 ${isVisible ? 'visible' : ''}`}>
-        <div className="flex flex-col items-center">
-          <div
-            className="card-left flex justify-center items-center w-[480px] h-[270px] bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md rounded-2xl shadow-lg cursor-pointer hover:shadow-2xl hover:bg-opacity-80 transition-transform transform hover:scale-105 duration-300 bg-clip-padding card-hover"
-            onClick={() => handleCardClick('/horizontal-videos')}
-            style={{
-              border: '0.5px solid transparent',
-              borderRadius: '16px',
-              backgroundImage: `linear-gradient(to bottom, #1c1917, #0a0a0a), linear-gradient(to bottom, rgba(192, 192, 192, var(--border-from-opacity)), rgba(255, 255, 255, var(--border-to-opacity)))`,
-              backgroundOrigin: 'border-box',
-              backgroundClip: 'padding-box, border-box'
-            }}
-          >
-            <div className="flex justify-center items-center w-16 h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
-              <svg className="w-8 h-8 text-gray-900" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 5.14C8 3.73 9.57 2.89 10.74 3.67l9.03 5.86c.95.62.95 2.01 0 2.63l-9.03 5.86C9.57 18.8 8 17.97 8 16.56V5.14z" fill="currentColor" />
-              </svg>
-            </div>
+      <div className="w-full flex justify-center items-center px-4">
+        <div className={`flex flex-col md:flex-row justify-center items-center md:space-x-32 lg:space-x-48 xl:space-x-64 space-y-12 md:space-y-0 my-6 md:my-12 ${isVisible ? 'visible' : ''}`}>
+          <div className="flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <div
+                className="card-left flex justify-center items-center w-[480px] h-[270px] bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md rounded-2xl shadow-lg cursor-pointer hover:shadow-2xl hover:bg-opacity-80 transition-transform transform hover:scale-105 duration-300 bg-clip-padding card-hover"
+                onClick={() => handleCardClick('/horizontal-videos')}
+                style={{
+                  border: '0.5px solid transparent',
+                  borderRadius: '16px',
+                  backgroundImage: `linear-gradient(to bottom, #1c1917, #0a0a0a), linear-gradient(to bottom, rgba(192, 192, 192, var(--border-from-opacity)), rgba(255, 255, 255, var(--border-to-opacity)))`,
+                  backgroundOrigin: 'border-box',
+                  backgroundClip: 'padding-box, border-box'
+                }}
+              >
+                <div className="flex justify-center items-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-900" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5.14C8 3.73 9.57 2.89 10.74 3.67l9.03 5.86c.95.62.95 2.01 0 2.63l-9.03 5.86C9.57 18.8 8 17.97 8 16.56V5.14z" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="mt-4 sm:mt-6 text-center"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold mb-1 sm:mb-2">Long Form</h2>
+              <p className="text-gray-300 text-sm sm:text-base">Watch videos in long form</p>
+            </motion.div>
           </div>
-          <div className="flex space-x-2 mt-4 text-container">
-            <motion.span 
-              className="text-center text-3xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-b from-neutral-100 to-neutral-400 bg-clip-text text-transparent leading-loose" 
-              variants={wordAnimation}
-              initial="hidden"
-              animate="visible"
-              custom={0}
+          
+          <div className="flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
             >
-              Long
-            </motion.span>
-            <motion.span 
-              className="text-center text-3xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-b from-neutral-100 to-neutral-400 bg-clip-text text-transparent leading-loose" 
-              variants={wordAnimation}
-              initial="hidden"
-              animate="visible"
-              custom={1}
+              <div
+                className="card-right flex justify-center items-center w-[270px] h-[480px] bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md rounded-2xl shadow-lg cursor-pointer hover:shadow-2xl hover:bg-opacity-80 transition-transform transform hover:scale-105 duration-300 bg-clip-padding card-hover"
+                onClick={() => handleCardClick('/vertical-videos')}
+                style={{
+                  border: '0.5px solid transparent',
+                  borderRadius: '16px',
+                  backgroundImage: `linear-gradient(to bottom, #1c1917, #0a0a0a), linear-gradient(to bottom, rgba(192, 192, 192, var(--border-from-opacity)), rgba(255, 255, 255, var(--border-to-opacity)))`,
+                  backgroundOrigin: 'border-box',
+                  backgroundClip: 'padding-box, border-box'
+                }}
+              >
+                <div className="flex justify-center items-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-900" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5.14C8 3.73 9.57 2.89 10.74 3.67l9.03 5.86c.95.62.95 2.01 0 2.63l-9.03 5.86C9.57 18.8 8 17.97 8 16.56V5.14z" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="mt-4 sm:mt-6 text-center"
             >
-              Form
-            </motion.span>
-          </div>
-        </div>
-        <div className="flex flex-col items-center">
-          <div
-            className="card-right flex justify-center items-center w-[270px] h-[480px] bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md rounded-2xl shadow-lg cursor-pointer hover:shadow-2xl hover:bg-opacity-80 transition-transform transform hover:scale-105 duration-300 bg-clip-padding card-hover"
-            onClick={() => handleCardClick('/vertical-videos')}
-            style={{
-              border: '0.5px solid transparent',
-              borderRadius: '16px',
-              backgroundImage: `linear-gradient(to bottom, #1c1917, #0a0a0a), linear-gradient(to bottom, rgba(192, 192, 192, var(--border-from-opacity)), rgba(255, 255, 255, var(--border-to-opacity)))`,
-              backgroundOrigin: 'border-box',
-              backgroundClip: 'padding-box, border-box'
-            }}
-          >
-            <div className="flex justify-center items-center w-16 h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
-              <svg className="w-8 h-8 text-gray-900" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 5.14C8 3.73 9.57 2.89 10.74 3.67l9.03 5.86c.95.62.95 2.01 0 2.63l-9.03 5.86C9.57 18.8 8 17.97 8 16.56V5.14z" fill="currentColor" />
-              </svg>
-            </div>
-          </div> 
-          <div className="flex space-x-2 mt-4 text-container">
-            <motion.span 
-              className="text-center text-3xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-b from-neutral-100 to-neutral-400 bg-clip-text text-transparent leading-loose" 
-              variants={wordAnimation}
-              initial="hidden"
-              animate="visible"
-              custom={0}
-            >
-              Short
-            </motion.span>
-            <motion.span 
-              className="text-center text-3xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-b from-neutral-100 to-neutral-400 bg-clip-text text-transparent leading-loose" 
-              variants={wordAnimation}
-              initial="hidden"
-              animate="visible"
-              custom={1}
-            >
-              Form
-            </motion.span>
+              <h2 className="text-xl sm:text-2xl font-semibold mb-1 sm:mb-2">Short Form</h2>
+              <p className="text-gray-300 text-sm sm:text-base">Watch videos in short form</p>
+            </motion.div>
           </div>
         </div>
       </div>

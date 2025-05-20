@@ -1,52 +1,99 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import React from 'react';
+import { VideoPlayer } from '@/components/VideoPlayer';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { IoMdArrowRoundBack } from 'react-icons/io';
+import Navbar from '../(home)/components/Navbar';
 
-export default function HorizontalVideosPage() {
+interface VideoItem {
+  id: string;
+  title: string;
+  description: string;
+  src: string;
+  poster?: string;
+}
+
+const videos: VideoItem[] = [
+  {
+    id: '1',
+    title: '',
+    description: 'Intro and video sections with beautiful motion graphics',
+    src: '/videos/horizontal/Gabriel 3.mp4',
+  },
+  {
+    id: '2',
+    title: '',
+    description: 'Youtube intro with beautiful motion graphics',
+    src: '/videos/horizontal/know.mp4',
+  },
+  {
+    id: '3',
+    title: '',
+    description: 'Professional intro sequence with modern graphics',
+    src: '/videos/horizontal/Intro6.mp4',
+  },
+  {
+    id: '4',
+    title: '',
+    description: 'Creative youtube intro video with dynamic graphics and effects',
+    src: '/videos/horizontal/Santi.mp4',
+  },
+  {
+    id: '5',
+    title: '',
+    description: 'Brand promotion with engaging storytelling',
+    src: '/videos/horizontal/Scuffers.mp4',
+  },
+  {
+    id: '6',
+    title: '',
+    description: 'Artistic visualization of music lyrics',
+    src: '/videos/horizontal/Lyrics.mp4',
+  }
+];
+
+export default function HorizontalVideos() {
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <Link 
-        href="/" 
-        className="inline-block mb-8 text-neutral-400 hover:text-white transition-colors duration-300"
-      >
-        ← Back to selection
-      </Link>
+    <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
+      <Navbar />
       
-      <motion.h1 
-        className="text-4xl md:text-5xl font-bold mb-12 text-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        Long Form Videos
-      </motion.h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Example video cards - replace with your actual content */}
-        {[1, 2, 3, 4, 5, 6].map((item) => (
-          <motion.div
-            key={item}
-            className="bg-neutral-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: item * 0.1 }}
+      <div className="max-w-7xl mx-auto pt-20">
+        <div className="flex items-center justify-between mb-8">
+          <Link 
+            href="/" 
+            className="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors"
           >
-            <div className="aspect-video bg-neutral-800 relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <svg className="w-16 h-16 text-white opacity-80" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
-                  <path d="M10 8.5c0-.28.22-.5.5-.5h.01c.13 0 .26.05.35.15l4.5 3.5c.2.18.2.52 0 .7l-4.5 3.5c-.09.1-.22.15-.35.15h-.01c-.28 0-.5-.22-.5-.5V8.5z" fill="currentColor" stroke="none" />
-                </svg>
+            <IoMdArrowRoundBack className="w-6 h-6" />
+            <span>Back to Selection</span>
+          </Link>
+          <h1 className="text-4xl font-bold text-center flex-1">Horizontal Videos</h1>
+          <div className="w-[150px]"></div> {/* Spacer to balance the layout */}
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {videos.map((video, index) => (
+            <motion.div
+              key={video.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md border border-white/10 p-0"
+            >
+              <VideoPlayer
+                src={video.src}
+                poster={video.poster}
+                className="w-full rounded-t-2xl"
+                controls
+              />
+              <div className="p-6">
+                <h2 className="text-2xl font-semibold mb-2">{video.title}</h2>
+                <p className="text-gray-300 text-base">{video.description}</p>
               </div>
-            </div>
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-2">Video Title {item}</h3>
-              <p className="text-neutral-400 text-sm">This is a brief description of the video content.</p>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
