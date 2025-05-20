@@ -1,164 +1,224 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { HiOutlineSpeakerXMark, HiOutlineSpeakerWave } from 'react-icons/hi2';
+import { BsThreeDots } from 'react-icons/bs';
+import { FaHeart, FaCommentDots, FaShare, FaMusic } from 'react-icons/fa';
 import Navbar from '../(home)/components/Navbar';
 
 export default function VerticalVideosPage() {
   const [activeVideo, setActiveVideo] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [muted, setMuted] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Example data - replace with your actual videos
+  // Example data - each item will use the same video for demonstration
   const videos = [
-    { id: 1, title: "Short Video 1", description: "Trending content" },
-    { id: 2, title: "Short Video 2", description: "Popular dance" },
-    { id: 3, title: "Short Video 3", description: "Tutorial" },
-    { id: 4, title: "Short Video 4", description: "Funny clip" },
-    { id: 5, title: "Short Video 5", description: "Creative edit" },
+    { id: 1, src: "/videos/vertical/Vertical.mp4", title: "Short Video 1", description: "Motion Graphics y videos", hashtags: ["Motion", "Premiere"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 4600000, comments: 28400, shares: 269400, music: "el silenciamiento", views: 183900 } },
+    { id: 2, src: "/videos/vertical/Vertical.mp4", title: "Short Video 2", description: "Popular dance", hashtags: ["dance"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 1200, comments: 80, shares: 50, music: "song 2", views: 2000 } },
+    { id: 3, src: "/videos/vertical/Vertical.mp4", title: "Short Video 3", description: "Tutorial", hashtags: ["tutorial"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 900, comments: 40, shares: 20, music: "song 3", views: 1000 } },
+    { id: 4, src: "/videos/vertical/Vertical.mp4", title: "Short Video 4", description: "Funny clip", hashtags: ["funny"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 800, comments: 30, shares: 10, music: "song 4", views: 800 } },
+    { id: 5, src: "/videos/vertical/Vertical.mp4", title: "Short Video 5", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 700, comments: 20, shares: 5, music: "song 5", views: 600 } },
   ];
 
+  // Set up observer for videos
   useEffect(() => {
-    // Small delay to ensure DOM is ready
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 10);
-    
+    if (containerRef.current) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const videoElement = (entry.target as HTMLElement).querySelector('video');
+            const videoIndex = parseInt((entry.target as HTMLElement).getAttribute('data-index') || '0');
+            if (entry.isIntersecting) {
+              setActiveVideo(videoIndex);
+              if (videoElement) {
+                videoElement.play().catch(() => {});
+              }
+            } else {
+              if (videoElement) {
+                videoElement.pause();
+              }
+            }
+          });
+        },
+        {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.7,
+        }
+      );
+      const videoContainers = containerRef.current.querySelectorAll('.video-item');
+      videoContainers.forEach((el) => observer.observe(el));
+      return () => {
+        videoContainers.forEach((el) => observer.unobserve(el));
+      };
+    }
     return () => clearTimeout(timer);
-  }, []);
+  }, [isVisible]);
 
-  const goToNextVideo = () => {
-    setActiveVideo((prev) => (prev === videos.length - 1 ? 0 : prev + 1));
+  // Sync mute state
+  useEffect(() => {
+    videoRefs.current.forEach((video, idx) => {
+      if (video) video.muted = muted;
+    });
+  }, [muted, activeVideo]);
+
+  // Handle manual scrolling to a video
+  const scrollToVideo = (index: number) => {
+    if (containerRef.current) {
+      const videoElements = containerRef.current.querySelectorAll('.video-item');
+      if (videoElements[index]) {
+        videoElements[index].scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
-  const goToPrevVideo = () => {
-    setActiveVideo((prev) => (prev === 0 ? videos.length - 1 : prev - 1));
+  // Format numbers (e.g. 4.6M)
+  const formatNumber = (num: number) => {
+    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+    return num;
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white overflow-hidden py-24">
       <Navbar />
-      
-      {/* Header with back button */}
-      <div className="p-4 sm:p-6 md:p-8 pt-20">
-        <div className="flex items-center justify-between mb-4 md:mb-8 max-w-7xl mx-auto">
-          <Link 
-            href="/" 
-            className="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors"
-          >
+      {/* Header with back button and title */}
+      <div className="w-full flex flex-col items-center justify-center pt-8 pb-4 py-10">
+        <div className="flex items-center justify-between w-full max-w-xl px-4 mb-2">
+          <Link href="/" className="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors">
             <IoMdArrowRoundBack className="w-6 h-6" />
             <span className="hidden sm:inline">Back to Selection</span>
           </Link>
-          <motion.h1 
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Short Form Videos
-          </motion.h1>
-          <div className="w-[30px] sm:w-[150px]"></div> {/* Spacer to balance the layout */}
+          <div className="flex-1 flex justify-center">
+            <h1 className="text-2xl md:text-3xl font-bold text-center">Short Form Videos</h1>
+          </div>
+          <div className="w-8" /> {/* Spacer for symmetry */}
         </div>
       </div>
-      
-      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2 sm:px-4">
-        {/* Video Player Section with Navigation */}
-        <div className="w-full lg:w-2/3 flex flex-col items-center justify-center pb-6 relative">
-          {/* Video Player */}
-          <div 
-            className={`w-full max-w-[340px] h-[600px] bg-neutral-800 rounded-2xl overflow-hidden shadow-2xl relative opacity-0 scale-95 transition-all duration-500 ${isVisible ? 'opacity-100 scale-100' : ''}`}
+      {/* TikTok-style vertical scrolling container */}
+      <div
+        ref={containerRef}
+        className="h-[100vh] w-full overflow-y-scroll snap-y snap-mandatory flex flex-col items-center pt-16 md:pt-20 gap-y-8       "
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {videos.map((video, index) => (
+          <div
+            key={video.id}
+            data-index={index}
+            className={`video-item flex items-center justify-center snap-start snap-always w-full h-[100vh] ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+            style={{ transition: 'opacity 0.5s ease' }}
           >
-            {/* Video content */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <svg className="w-16 h-16 text-white opacity-80" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
-                <path d="M10 8.5c0-.28.22-.5.5-.5h.01c.13 0 .26.05.35.15l4.5 3.5c.2.18.2.52 0 .7l-4.5 3.5c-.09.1-.22.15-.35.15h-.01c-.28 0-.5-.22-.5-.5V8.5z" fill="currentColor" stroke="none" />
-              </svg>
-            </div>
-            
-            {/* Video info overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
-              <h3 className="text-xl font-bold">{videos[activeVideo].title}</h3>
-              <p className="text-neutral-300">{videos[activeVideo].description}</p>
-            </div>
-            
-            {/* Side navigation buttons - attached to the video itself */}
-            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black/30 to-transparent flex items-center justify-start pl-1">
-              <button 
-                onClick={goToPrevVideo}
-                className="w-10 h-10 bg-black/40 rounded-full flex items-center justify-center backdrop-blur-sm transition-transform hover:scale-110 focus:outline-none border border-white/20"
-                aria-label="Previous video"
-              >
-                <IoChevronBack className="w-6 h-6 text-white" />
-              </button>
-            </div>
-            
-            <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/30 to-transparent flex items-center justify-end pr-1">
-              <button 
-                onClick={goToNextVideo}
-                className="w-10 h-10 bg-black/40 rounded-full flex items-center justify-center backdrop-blur-sm transition-transform hover:scale-110 focus:outline-none border border-white/20"
-                aria-label="Next video"
-              >
-                <IoChevronForward className="w-6 h-6 text-white" />
-              </button>
-            </div>
-          </div>
-          
-          {/* Video indicator dots */}
-          <div className="mt-6 flex justify-center gap-3">
-            {videos.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveVideo(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  activeVideo === index ? 'bg-yellow-300' : 'bg-white/40 hover:bg-white/60'
-                }`}
-                aria-label={`Go to video ${index + 1}`}
-              />
-            ))}
-          </div>
-          
-          {/* Video Counter */}
-          <div className="mt-3 text-center text-sm text-white/70">
-            <span className="font-medium text-white">{activeVideo + 1}</span> / {videos.length}
-          </div>
-        </div>
-        
-        {/* Video selection sidebar */}
-        <div className="w-full lg:w-1/3 p-4 border-t lg:border-t-0 lg:border-l border-white/10">
-          <h2 className="text-2xl font-semibold mb-4">More Videos</h2>
-          <div className="space-y-4 overflow-y-auto max-h-[600px] pr-2">
-            {videos.map((video, index) => (
+            <div
+              className="relative flex items-center justify-center w-full h-full"
+            >
+              {/* Video container with overlays inside only */}
               <div
-                key={video.id}
-                className={`flex items-center p-3 rounded-lg cursor-pointer transition-all duration-500 opacity-0 translate-x-4 ${
-                  activeVideo === index ? 'bg-neutral-800 border-l-4 border-yellow-300' : 'hover:bg-neutral-900'
-                } ${isVisible ? 'opacity-100 translate-x-0' : ''}`}
-                onClick={() => setActiveVideo(index)}
+                className="relative w-full h-full flex items-center justify-center"
                 style={{
-                  transitionDelay: `${index * 100 + 200}ms`,
-                  transitionProperty: 'opacity, transform, background-color, border-color'
+                  maxWidth: '420px',
+                  maxHeight: '90vh',
+                  borderRadius: '0',
                 }}
               >
-                <div className="w-20 h-36 bg-neutral-700 rounded-md relative mr-4 flex-shrink-0">
-                  {activeVideo === index && (
-                    <div className="absolute inset-0 bg-blue-500 bg-opacity-20 flex items-center justify-center">
-                      <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-                        <span className="text-black text-xs">▶</span>
+                <div
+                  className="relative w-full h-full bg-black flex items-center justify-center
+                    md:rounded-2xl md:shadow-2xl md:overflow-hidden"
+                  style={{ aspectRatio: '9/16' }}
+                >
+                  <video
+                    ref={(el) => { videoRefs.current[index] = el; }}
+                    src={video.src}
+                    className="object-cover w-full h-full"
+                    playsInline
+                    loop
+                    muted={muted}
+                    preload="auto"
+                    style={{ aspectRatio: '9/16' }}
+                  />
+                  {/* Top overlays */}
+                  <div className="absolute top-0 left-0 w-full flex justify-between items-start p-3 z-10">
+                    <button
+                      className="bg-black/60 rounded-full p-2 text-white hover:bg-black/80 transition"
+                      onClick={() => setMuted((m) => !m)}
+                      aria-label={muted ? 'Unmute' : 'Mute'}
+                    >
+                      {muted ? <HiOutlineSpeakerXMark className="w-6 h-6" /> : <HiOutlineSpeakerWave className="w-6 h-6" />}
+                    </button>
+                    <button className="bg-black/60 rounded-full p-2 text-white hover:bg-black/80 transition">
+                      <BsThreeDots className="w-6 h-6" />
+                    </button>
+                  </div>
+                  {/* Caption overlay */}
+                  <div className="absolute top-16 left-0 w-full px-5 z-10 pointer-events-none">
+                    <div className="text-lg md:text-xl font-semibold text-white text-shadow drop-shadow-lg whitespace-pre-line">
+                      {video.title}
+                    </div>
+                  </div>
+                  {/* Bottom overlays */}
+                  <div className="absolute bottom-0 left-0 w-full flex flex-row justify-between items-end p-5 z-10">
+                    {/* User info and description */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <img
+                          src={video.user.avatar}
+                          alt={video.user.name}
+                          className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                        />
+                        <span className="font-semibold text-white text-sm">{video.user.name}</span>
+                      </div>
+                      <div className="text-white text-sm mb-1 truncate">
+                        {video.description}
+                      </div>
+                      <div className="text-white/80 text-xs flex flex-wrap gap-1 mb-1">
+                        {video.hashtags.map((tag) => (
+                          <span key={tag}>#{tag}</span>
+                        ))}
+                      </div>
+                      <div className="text-white/60 text-xs flex items-center gap-1">
+                        <FaMusic className="inline-block mr-1" />
+                        <span className="truncate">{video.stats.music}</span>
                       </div>
                     </div>
-                  )}
-                </div>
-                <div>
-                  <h3 className="font-medium">{video.title}</h3>
-                  <p className="text-sm text-neutral-400">{video.description}</p>
+                    {/* Action bar */}
+                    <div className="flex flex-col items-center gap-4 ml-4">
+                      <img
+                        src={video.user.avatar}
+                        alt={video.user.name}
+                        className="w-12 h-12 rounded-full border-2 border-white object-cover mb-2"
+                      />
+                      <button className="flex flex-col items-center group">
+                        <FaHeart className="w-7 h-7 mb-1 group-hover:scale-110 transition text-white" />
+                        <span className="text-xs text-white font-semibold">{formatNumber(video.stats.likes)}</span>
+                      </button>
+                      <button className="flex flex-col items-center group">
+                        <FaCommentDots className="w-7 h-7 mb-1 group-hover:scale-110 transition text-white" />
+                        <span className="text-xs text-white font-semibold">{formatNumber(video.stats.comments)}</span>
+                      </button>
+                      <button className="flex flex-col items-center group">
+                        <FaShare className="w-7 h-7 mb-1 group-hover:scale-110 transition text-white" />
+                        <span className="text-xs text-white font-semibold">{formatNumber(video.stats.shares)}</span>
+                      </button>
+                      <button className="flex flex-col items-center group">
+                        <FaMusic className="w-7 h-7 mb-1 group-hover:scale-110 transition text-white" />
+                        <span className="text-xs text-white font-semibold">{formatNumber(video.stats.views)}</span>
+                      </button>
+                    </div>
+                  </div>
+                  {/* Overlay for dark background outside video on desktop */}
+                  <div className="hidden md:block absolute inset-0 pointer-events-none rounded-2xl ring-1 ring-white/10" />
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
