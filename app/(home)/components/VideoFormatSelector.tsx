@@ -1,10 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 
 const VideoFormatSelector = () => {
   const router = useRouter();
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+      
+      // Calculate normalized position (0-1)
+      const x = clientX / innerWidth;
+      const y = clientY / innerHeight;
+      
+      // Update CSS custom properties
+      document.documentElement.style.setProperty('--x', `${clientX}px`);
+      document.documentElement.style.setProperty('--y', `${clientY}px`);
+      document.documentElement.style.setProperty('--xp', `${x}`);
+      document.documentElement.style.setProperty('--yp', `${y}`);
+      
+      setMousePosition({ x: clientX, y: clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const handleCardClick = (path: string) => {
     router.push(path);
@@ -15,41 +38,64 @@ const VideoFormatSelector = () => {
   return (
     <>
       <style jsx global>{`
-        body {
-          backdrop-filter: blur(10px);
+        :root {
+          --hue: 0;
+          --spread: 0;
+          --glow-size: 750px;
+          --border-width: 1px;
         }
-        .card-hover:hover {
-          --border-from-opacity: 0.3;
-          --border-to-opacity: 0.5;
+
+        .spotlight-card {
+          position: relative;
+          isolation: isolate;
+          background: linear-gradient(135deg, rgb(28, 25, 23), rgba(10, 10, 10, 0.64));
+          border-radius: 20px;
+          overflow: hidden;
         }
-        .card-hover {
-          --border-from-opacity: 0.1;
-          --border-to-opacity: 0.2;
-          transition: all 0.3s ease;
+
+        .spotlight-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(
+            circle at var(--x) var(--y),
+            rgba(255, 255, 255, 0.8),
+            transparent 30%
+          );
+          background-attachment: fixed;
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask-composite: exclude;
+          -webkit-mask-composite: xor;
+          padding: var(--border-width);
+          border-radius: inherit;
+          pointer-events: none;
+          z-index: 2;
         }
-        .card-left, 
-        .card-right {
-          opacity: 1;
-          transform: none;
-          transition: none;
+
+        .spotlight-card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(
+            circle at var(--x) var(--y),
+            rgba(255, 255, 255, 0.4),
+            transparent 30%
+          );
+          filter: blur(var(--glow-size));
+          z-index: 1;
         }
-        .text-container {
-          min-height: 4rem;
-          overflow: visible;
-          line-height: 1.6;
-          padding-bottom: 1rem;
-          margin-bottom: 1.5rem;
+
+        .play-button-container {
+          position: relative;
+          z-index: 3;
+          transition: transform 0.3s ease;
         }
-        @media (max-width: 1200px) {
-          .card-left {
-            width: 400px !important;
-            height: 225px !important;
-          }
-          .card-right {
-            width: 225px !important;
-            height: 400px !important;
-          }
+
+        .spotlight-card:hover .play-button-container {
+          transform: scale(1.1);
         }
+
         @media (max-width: 768px) {
           .card-left {
             width: 320px !important;
@@ -87,26 +133,21 @@ const VideoFormatSelector = () => {
         </div>
       </div>
       <div className="w-full flex justify-center items-center px-4">
-        <div className={`flex flex-col md:flex-row justify-center items-center md:space-x-32 lg:space-x-48 xl:space-x-64 space-y-12 md:space-y-0 my-6 md:my-12`}>
+        <div className="flex flex-col md:flex-row justify-center items-center md:space-x-32 lg:space-x-48 xl:space-x-64 space-y-12 md:space-y-0 my-6 md:my-12">
           <div className="flex flex-col items-center">
             <div>
-              <div
-                className="card-left flex justify-center items-center w-[480px] h-[270px] bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md rounded-2xl shadow-lg cursor-pointer hover:shadow-2xl hover:bg-opacity-80 transition-transform transform hover:scale-105 duration-300 bg-clip-padding card-hover"
+              <article
+                className="spotlight-card card-left flex justify-center items-center w-[480px] h-[270px] cursor-pointer"
                 onClick={() => handleCardClick('/horizontal-videos')}
-                style={{
-                  border: '0.5px solid transparent',
-                  borderRadius: '16px',
-                  backgroundImage: `linear-gradient(to bottom, #1c1917, #0a0a0a), linear-gradient(to bottom, rgba(192, 192, 192, var(--border-from-opacity)), rgba(255, 255, 255, var(--border-to-opacity)))`,
-                  backgroundOrigin: 'border-box',
-                  backgroundClip: 'padding-box, border-box'
-                }}
+                data-glow="horizontal"
               >
-                <div className="flex justify-center items-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
+                <div className="inner-glow"></div>
+                <div className="play-button-container flex justify-center items-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
                   <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-900" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 5.14C8 3.73 9.57 2.89 10.74 3.67l9.03 5.86c.95.62.95 2.01 0 2.63l-9.03 5.86C9.57 18.8 8 17.97 8 16.56V5.14z" fill="currentColor" />
                   </svg>
                 </div>
-              </div>
+              </article>
             </div>
             <div className="mt-4 sm:mt-6 text-center">
               <h2 className="text-xl sm:text-2xl font-semibold mb-1 sm:mb-2">Long Form</h2>
@@ -115,23 +156,18 @@ const VideoFormatSelector = () => {
           </div>
           <div className="flex flex-col items-center">
             <div>
-              <div
-                className="card-right flex justify-center items-center w-[270px] h-[480px] bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md rounded-2xl shadow-lg cursor-pointer hover:shadow-2xl hover:bg-opacity-80 transition-transform transform hover:scale-105 duration-300 bg-clip-padding card-hover"
+              <article
+                className="spotlight-card card-right flex justify-center items-center w-[270px] h-[480px] cursor-pointer"
                 onClick={() => handleCardClick('/vertical-videos')}
-                style={{
-                  border: '0.5px solid transparent',
-                  borderRadius: '16px',
-                  backgroundImage: `linear-gradient(to bottom, #1c1917, #0a0a0a), linear-gradient(to bottom, rgba(192, 192, 192, var(--border-from-opacity)), rgba(255, 255, 255, var(--border-to-opacity)))`,
-                  backgroundOrigin: 'border-box',
-                  backgroundClip: 'padding-box, border-box'
-                }}
+                data-glow="vertical"
               >
-                <div className="flex justify-center items-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
+                <div className="inner-glow"></div>
+                <div className="play-button-container flex justify-center items-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-b from-neutral-100 to-neutral-400 rounded-full">
                   <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-900" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 5.14C8 3.73 9.57 2.89 10.74 3.67l9.03 5.86c.95.62.95 2.01 0 2.63l-9.03 5.86C9.57 18.8 8 17.97 8 16.56V5.14z" fill="currentColor" />
                   </svg>
                 </div>
-              </div>
+              </article>
             </div>
             <div className="mt-4 sm:mt-6 text-center">
               <h2 className="text-xl sm:text-2xl font-semibold mb-1 sm:mb-2">Short Form</h2>

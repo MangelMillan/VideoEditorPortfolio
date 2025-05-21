@@ -4,7 +4,9 @@ import { HeroHighlight, Highlight } from "@/components/ui/highlight";
 import { HoverBorderGradient } from "@/components/ui/hoverborder";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { FiDownload } from "react-icons/fi";
+import { FaRegEye, FaEye } from "react-icons/fa";
 import Link from "next/link";
+import { useState } from "react";
 
 const DummyContent = () => {
   return (
@@ -29,13 +31,14 @@ const DummyContent = () => {
 };
 
 export function HeroSection() {
+  const [eyeHover, setEyeHover] = useState(false);
   const cards = data.map((card, index) => (
     <Card key={card.src} card={card} index={index} />
   ));
 
   return (
     <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0">
-      <div className="absolute inset-0 backdrop-filter backdrop-blur bg-gradient-to-circle from-transparent to-white opacity-50 pointer-events-none"></div>
+      <div className="absolute inset-0 backdrop-filter  backdrop-blur bg-gradient-to-circle from-transparent to-white opacity-50 pointer-events-none"></div>
       <div className="w-full md:w-1/2">
         <div className="text-3xl px-4 md:text-3xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto ">
           <h1 className="">
@@ -49,15 +52,22 @@ export function HeroSection() {
             <HoverBorderGradient
               containerClassName="rounded-2"
               as="button"
-              className="dark:bg-black bg-white text-black dark:text-white flex items-center space-x-2 w-auto h-auto text-lg"
+              className="dark:bg-black bg-white text-black dark:text-white flex items-center space-x-2 w-auto h-auto text-xl group"
+              onMouseEnter={() => setEyeHover(true)}
+              onMouseLeave={() => setEyeHover(false)}
             >
-              <FiDownload />
-              <Link
-                target="_blank"
-                download="Miguel Millán"
-                href={"/Miguel Millán CV.pdf"}
+              <motion.span
+                animate={{ scale: eyeHover ? 1.2 : 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="flex items-center"
               >
-                <span>Download CV</span>{" "}
+                {eyeHover ? <FaEye /> : <FaRegEye />}
+              </motion.span>
+              <Link
+                href="/video-selector/"
+                className="focus:outline-none"
+              >
+                <span>See my work</span>{" "}
               </Link>
             </HoverBorderGradient>
           </div>
@@ -73,29 +83,19 @@ export function HeroSection() {
 const data = [
   {
     category: "",
-    title: "Creator: TayluSs  Creator: Enriku",
+    title: "Creator: TayluSs",
     src: "/videos/adtay.mp4",
 
     content: <DummyContent />,
   },
-  {
-    category: "",
-    title: "Creator: Enriku",
-    src: "/videos/3Nriku.mp4",
-    content: <DummyContent />,
-  },
+ 
   {
     category: "",
     title: "Creator: TayluSs",
     src: "/videos/Tayu.mp4",
     content: <DummyContent />,
   },
-  {
-    category: "",
-    title: "Creator: Cinta Negra Esports",
-    src: "/videos/Dojo Masters X.mp4",
-    content: <DummyContent />,
-  },
+  
   {
     category: "",
     title: "Creator: KaroEmpowerment",
