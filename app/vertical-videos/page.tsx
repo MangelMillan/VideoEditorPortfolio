@@ -19,11 +19,11 @@ export default function VerticalVideosPage() {
 
   // Example data - each item will use the same video for demonstration
   const videos = [
-    { id: 1, src: "/videos/vertical/Vertical.mp4", title: "Short Video 1", description: "Motion Graphics y videos", hashtags: ["Motion", "Premiere"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 4600000, comments: 28400, shares: 269400, music: "el silenciamiento", views: 183900 } },
-    { id: 2, src: "/videos/vertical/Vertical.mp4", title: "Short Video 2", description: "Popular dance", hashtags: ["dance"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 1200, comments: 80, shares: 50, music: "song 2", views: 2000 } },
-    { id: 3, src: "/videos/vertical/Vertical.mp4", title: "Short Video 3", description: "Tutorial", hashtags: ["tutorial"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 900, comments: 40, shares: 20, music: "song 3", views: 1000 } },
-    { id: 4, src: "/videos/vertical/Vertical.mp4", title: "Short Video 4", description: "Funny clip", hashtags: ["funny"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 800, comments: 30, shares: 10, music: "song 4", views: 800 } },
-    { id: 5, src: "/videos/vertical/Vertical.mp4", title: "Short Video 5", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/avatar.jpg" }, stats: { likes: 700, comments: 20, shares: 5, music: "song 5", views: 600 } },
+    { id: 1, src: "/videos/vertical/Vertical.mp4", title: "", description: "Motion Graphics y videos", hashtags: ["Motion", "Premiere"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 46000, comments: 8400, shares: 2400, views: 183900 } },
+    { id: 2, src: "/videos/vertical/kfn.mp4", title: "", description: "Popular dance", hashtags: ["dance"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 1200, comments: 80, shares: 50,  views: 2000 } },
+    { id: 3, src: "/videos/vertical/Onestyle.mp4", title: "", description: "Tutorial", hashtags: ["tutorial"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 900, comments: 40, shares: 20, views: 1000 } },
+    { id: 4, src: "/videos/3Nriku.mp4", title: "", description: "Funny clip", hashtags: ["funny"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 800, comments: 30, shares: 10, views: 800 } },
+    { id: 5, src: "/videos/Demo Reel.mp4", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
   ];
 
   // Set up observer for videos
@@ -93,7 +93,7 @@ export default function VerticalVideosPage() {
       <div className="bg-black/[0.96] antialiased bg-grid-white/[0.05]">
         <Spotlight className="absolute top-0 left-0 h-[100%]" fill="white" />
         <Navbar />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
           {/* Header with back button and title */}
           <div className="w-full flex flex-col items-center justify-center pt-8 pb-4 py-10 pt-24">
             <div className="flex items-center justify-between w-full max-w-xl px-4 mb-2">
@@ -186,10 +186,7 @@ export default function VerticalVideosPage() {
                               <span key={tag}>#{tag}</span>
                             ))}
                           </div>
-                          <div className="text-white/60 text-xs flex items-center gap-1">
-                            <FaMusic className="inline-block mr-1" />
-                            <span className="truncate">{video.stats.music}</span>
-                          </div>
+                          
                         </div>
                         {/* Action bar */}
                         <div className="flex flex-col items-center gap-4 ml-4">

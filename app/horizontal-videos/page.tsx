@@ -52,6 +52,12 @@ const videos: VideoItem[] = [
     title: '',
     description: 'Artistic visualization of music lyrics',
     src: '/videos/horizontal/Lyrics.mp4',
+  },
+  {
+    id: '7',
+    title: '',
+    description: 'Visual name intros for games, music videos and more',
+    src: '/videos/horizontal/intros.mp4',
   }
 ];
 
