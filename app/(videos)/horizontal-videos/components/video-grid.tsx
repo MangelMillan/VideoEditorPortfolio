@@ -4,13 +4,13 @@ const videos = [
   {
     id: '1',
     title: '',
-    description: 'Intro and video sections with beautiful motion graphics',
+    description: 'Intro and video sections with animations and motion graphics',
     src: '/videos/horizontal/Gabriel 3.mp4',
   },
   {
     id: '2',
     title: '',
-    description: 'Youtube intro with beautiful motion graphics',
+    description: 'Youtube intro with beautiful graphics and animations',
     src: '/videos/horizontal/know.mp4',
   },
   {
@@ -46,7 +46,7 @@ const videos = [
   {
     id: '8',
     title: '',
-    description: 'Visual name intros for games, music videos and more',
+    description: 'Restaurant promotion videos',
     src: '/videos/horizontal/Zarandeado.mp4',
   }
 ] as const;
