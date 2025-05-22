@@ -12,6 +12,8 @@
     "@next/bundle-analyzer": "^15.3.2",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@tabler/icons-react": "^3.14.0",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "file-loader": "^6.2.0",
@@ -28,6 +30,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

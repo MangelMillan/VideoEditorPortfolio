@@ -34,9 +34,12 @@ const DummyContent = () => {
 
 export function HeroSection() {
   const [eyeHover, setEyeHover] = useState(false);
+<<<<<<< HEAD
   const cards = data.map((card, index) => (
     <Card key={card.videoId} card={card} index={index} />
   ));
+=======
+>>>>>>> d3d3f5ee73212c83aa69af5ec1847d17160bfb5e
 
   return (
     <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0 ">
@@ -75,8 +78,8 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex justify-center items-center h-full ">
-        <Carousel items={cards} />
+      <div className="w-full md:w-1/2 flex justify-center items-center h-full">
+        <Carousel items={data} />
       </div>
     </div>
   );
@@ -84,27 +87,39 @@ export function HeroSection() {
 
 const data = [
   {
+    id: "1",
     category: "",
     title: "Creator: TayluSs",
+<<<<<<< HEAD
     videoId: "6PT0FgCcfug",
+=======
+    src: "/videos/adtay.mp4",
+>>>>>>> d3d3f5ee73212c83aa69af5ec1847d17160bfb5e
     content: <DummyContent />,
+    isVideo: true
   },
   {
+    id: "2",
     category: "",
     title: "Creator: TayluSs",
     videoId: "tHqZvpe_WHs",
     content: <DummyContent />,
+    isVideo: true
   },
   {
+    id: "3",
     category: "",
     title: "Creator: KaroEmpowerment",
     videoId: "Z7h2ulM-KUQ",
     content: <DummyContent />,
+    isVideo: true
   },
   {
+    id: "4",
     category: "",
     title: "Creator: GreenerWear",
     videoId: "289oaKJbw5o",
     content: <DummyContent />,
+    isVideo: true
   },
 ];

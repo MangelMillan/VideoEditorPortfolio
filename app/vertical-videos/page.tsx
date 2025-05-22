@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { HiOutlineSpeakerXMark, HiOutlineSpeakerWave } from 'react-icons/hi2';
@@ -172,10 +173,12 @@ export default function VerticalVideosPage() {
                         {/* User info and description */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <img
+                            <Image
                               src={video.user.avatar}
                               alt={video.user.name}
-                              className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                              width={32}
+                              height={32}
+                              className="rounded-full border-2 border-white object-cover"
                             />
                             <span className="font-semibold text-white text-sm">{video.user.name}</span>
                           </div>
@@ -191,10 +194,12 @@ export default function VerticalVideosPage() {
                         </div>
                         {/* Action bar */}
                         <div className="flex flex-col items-center gap-4 ml-4">
-                          <img
+                          <Image
                             src={video.user.avatar}
                             alt={video.user.name}
-                            className="w-12 h-12 rounded-full border-2 border-white object-cover mb-2"
+                            width={48}
+                            height={48}
+                            className="rounded-full border-2 border-white object-cover mb-2"
                           />
                           <button className="flex flex-col items-center group">
                             <FaHeart className="w-7 h-7 mb-1 group-hover:scale-110 transition text-white" />
