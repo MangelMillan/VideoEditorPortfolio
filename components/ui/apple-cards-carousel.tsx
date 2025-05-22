@@ -59,7 +59,7 @@ const CarouselArrowButton = memo(({
   <button
     className={cn(
       "relative z-40 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center",
-      "transform transition-transform hover:scale-105 active:scale-95",
+      "transform-gpu transition-transform duration-200 hover:scale-105 active:scale-95",
       "will-change-transform",
       disabled && "opacity-50 cursor-not-allowed"
     )}
@@ -78,6 +78,7 @@ const CarouselArrowButton = memo(({
     )}
   </button>
 ));
+CarouselArrowButton.displayName = 'CarouselArrowButton';
 
 const CarouselVideo = memo(({ src }: { src: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -121,6 +122,7 @@ const CarouselVideo = memo(({ src }: { src: string }) => {
     />
   );
 });
+CarouselVideo.displayName = 'CarouselVideo';
 
 const CarouselImage = memo(({ 
   src, 
@@ -148,6 +150,7 @@ const CarouselImage = memo(({
     />
   );
 });
+CarouselImage.displayName = 'CarouselImage';
 
 const CarouselCard = memo(({ 
   item, 
@@ -190,6 +193,7 @@ const CarouselCard = memo(({
     </div>
   );
 });
+CarouselCard.displayName = 'CarouselCard';
 
 export function Carousel({ items, initialScroll = 0 }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -284,6 +288,11 @@ export const Card = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const { onCardClose, currentIndex } = useContext(CarouselContext);
 
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    onCardClose(index);
+  }, [onCardClose, index]);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -299,7 +308,7 @@ export const Card = ({
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [open, handleClose]);
 
   useOutsideClick(containerRef, () => handleClose());
 
@@ -307,10 +316,6 @@ export const Card = ({
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    onCardClose(index);
-  };
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
