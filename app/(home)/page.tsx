@@ -24,7 +24,7 @@ export default function page() {
         <div className="  px-4 sm:px-6 lg:px-8">
           <Navbar />
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-[200px]">
           <HeroSection />
         </div>
       

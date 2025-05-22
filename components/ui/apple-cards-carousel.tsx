@@ -19,19 +19,20 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Image, { ImageProps } from "next/image";
 import { useOutsideClick } from "@/hooks/use-outside-click";
+import { YouTubeVideo } from "@/components/YouTubeVideo";
 
 interface CarouselProps {
   items: JSX.Element[];
   initialScroll?: number;
 }
 
-type Card = {
-  src: string;
-  title: string;
+interface Card {
   category: string;
+  title: string;
+  src?: string;
+  videoId?: string;
   content: React.ReactNode;
-  isVideo?: boolean;
-};
+}
 
 export const CarouselContext = createContext<{
   onCardClose: (index: number) => void;
@@ -76,7 +77,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth = isMobile() ? 230 : 384; // (md:w-96)
+      const cardWidth = isMobile() ? 200 : window.innerWidth < 798 ? 240 : window.innerWidth < 1024 ? 320 : 360; // Responsive widths
       const gap = isMobile() ? 4 : 8;
       const scrollPosition = (cardWidth + gap) * (index + 1);
       carouselRef.current.scrollTo({
@@ -137,7 +138,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
             ))}
           </div>
         </div>
-        <div className="flex justify-end gap-2 mr-10">
+        <div className="flex justify-end gap-2 mr-4 pb-20">
           <button
             className="relative z-40 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center disabled:opacity-50"
             onClick={scrollLeft}
@@ -218,7 +219,7 @@ export const Card = ({
       setIsMuted(!isMuted);
     }
   };
-  const isVideo = card.src.endsWith(".mp4");
+  const isVideo = card.src?.endsWith(".mp4") || false;
 
   return (
     <>
@@ -257,7 +258,7 @@ export const Card = ({
               >
                 {card.title}
               </motion.p>
-              <div className="py-10">{card.content}</div>
+              <div className="py-5">{card.content}</div>
             </motion.div>
           </div>
         )}
@@ -265,7 +266,7 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[40rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative z-10"
+        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 aspect-[9/16] w-[200px] md:w-[240px] lg:w-[320px] xl:w-[360px] overflow-hidden flex flex-col items-start justify-start relative z-10"
       >
         <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
         <div className="relative z-40 p-8">
@@ -276,7 +277,15 @@ export const Card = ({
             {card.category}
           </motion.p>
         </div>
-        {isVideo ? (
+        {card.videoId ? (
+          <div className="absolute inset-0 z-10 overflow-hidden rounded-3xl">
+            <YouTubeVideo
+              videoId={card.videoId}
+              className="w-full h-full"
+              title={card.title}
+            />
+          </div>
+        ) : card.src ? (
           <video
             src={card.src}
             autoPlay
@@ -287,19 +296,10 @@ export const Card = ({
             className="absolute z-10 inset-0 object-cover"
             onLoadedData={(e) => {
               const video = e.target as HTMLVideoElement;
-              video.playbackRate = 0.5; // Slower playback for better performance
+              video.playbackRate = 0.5;
             }}
           />
-        ) : (
-          <BlurImage
-            src={card.src}
-            alt={card.title}
-            fill
-            className="object-cover absolute z-10 inset-0"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority={index === 0}
-          />
-        )}
+        ) : null}
       </motion.button>
     </>
   );

@@ -7,6 +7,8 @@ import { FiDownload } from "react-icons/fi";
 import { FaRegEye, FaEye } from "react-icons/fa";
 import Link from "next/link";
 import { useState } from "react";
+import { YouTubeVideo } from "@/components/YouTubeVideo";
+
 
 const DummyContent = () => {
   return (
@@ -15,9 +17,9 @@ const DummyContent = () => {
         return (
           <div
             key={"dummy-content" + index}
-            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
+            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 "
           >
-            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto ">
               <span className="font-bold text-neutral-700 dark:text-neutral-200">
                 Edited using Premiere pro and After effects.
               </span>{" "}
@@ -33,13 +35,13 @@ const DummyContent = () => {
 export function HeroSection() {
   const [eyeHover, setEyeHover] = useState(false);
   const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
+    <Card key={card.videoId} card={card} index={index} />
   ));
 
   return (
-    <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0">
-      <div className="absolute inset-0 backdrop-filter  backdrop-blur bg-gradient-to-circle from-transparent to-white opacity-50 pointer-events-none"></div>
-      <div className="w-full md:w-1/2">
+    <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0 ">
+      <div className="absolute inset-0 backdrop-filter  backdrop-blur bg-gradient-to-circle from-transparent to-white opacity-50 pointer-events-none "></div>
+      <div className="w-full md:w-1/2 ">
         <div className="text-3xl px-4 md:text-3xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto ">
           <h1 className="">
             👋 Hey there,
@@ -84,28 +86,25 @@ const data = [
   {
     category: "",
     title: "Creator: TayluSs",
-    src: "/videos/adtay.mp4",
-
+    videoId: "6PT0FgCcfug",
     content: <DummyContent />,
   },
- 
   {
     category: "",
     title: "Creator: TayluSs",
-    src: "/videos/Tayu.mp4",
+    videoId: "tHqZvpe_WHs",
     content: <DummyContent />,
   },
-  
   {
     category: "",
     title: "Creator: KaroEmpowerment",
-    src: "/videos/Karo.mp4",
+    videoId: "Z7h2ulM-KUQ",
     content: <DummyContent />,
   },
   {
     category: "",
     title: "Creator: GreenerWear",
-    src: "/videos/Greener.mp4",
+    videoId: "289oaKJbw5o",
     content: <DummyContent />,
   },
 ];
