@@ -174,6 +174,11 @@ export const Card = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const { onCardClose, currentIndex } = useContext(CarouselContext);
 
+  const handleClose = () => {
+    setOpen(false);
+    onCardClose(index);
+  };
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -189,7 +194,7 @@ export const Card = ({
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [open, handleClose]);
 
   useOutsideClick(containerRef, () => handleClose());
 
@@ -197,10 +202,6 @@ export const Card = ({
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    onCardClose(index);
-  };
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {

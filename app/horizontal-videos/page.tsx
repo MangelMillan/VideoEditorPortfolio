@@ -67,22 +67,28 @@ const videos: VideoItem[] = [
   }
 ];
 
-// Add spotlight effect logic
-function useSpotlight() {
-  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, active: false });
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+export default function HorizontalVideos() {
+  const [spotlights, setSpotlights] = useState(
+    videos.map(() => ({ x: 0, y: 0, active: false }))
+  );
+
+  const handleMouseMove = (index: number) => (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = (e.target as HTMLDivElement).getBoundingClientRect();
-    setSpotlight({
+    const newSpotlights = [...spotlights];
+    newSpotlights[index] = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
       active: true,
-    });
+    };
+    setSpotlights(newSpotlights);
   };
-  const handleMouseLeave = () => setSpotlight((s) => ({ ...s, active: false }));
-  return { spotlight, handleMouseMove, handleMouseLeave };
-}
 
-export default function HorizontalVideos() {
+  const handleMouseLeave = (index: number) => () => {
+    const newSpotlights = [...spotlights];
+    newSpotlights[index] = { ...newSpotlights[index], active: false };
+    setSpotlights(newSpotlights);
+  };
+
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <style jsx global>{`
@@ -157,36 +163,33 @@ export default function HorizontalVideos() {
               <div className="w-[150px]"></div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {videos.map((video, index) => {
-                const { spotlight, handleMouseMove, handleMouseLeave } = useSpotlight();
-                return (
-                  <motion.div
-                    key={video.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`spotlight-card rounded-2xl overflow-hidden shadow-lg bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md border border-white/10 p-0${spotlight.active ? ' active' : ''}`}
-                    style={{
-                      '--x': `${spotlight.x}px`,
-                      '--y': `${spotlight.y}px`,
-                    } as React.CSSProperties}
-                    onMouseMove={handleMouseMove}
-                    onMouseLeave={handleMouseLeave}
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <VideoPlayer
-                      src={video.src}
-                      poster={video.poster}
-                      className="w-full rounded-t-2xl"
-                      controls
-                    />
-                    <div className="p-6">
-                      <h2 className="text-2xl font-semibold mb-2">{video.title}</h2>
-                      <p className="text-gray-300 text-base">{video.description}</p>
-                    </div>
-                  </motion.div>
-                );
-              })}
+              {videos.map((video, index) => (
+                <motion.div
+                  key={video.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`spotlight-card rounded-2xl overflow-hidden shadow-lg bg-gradient-to-b from-stone-900/70 to-neutral-950/70 backdrop-blur-md border border-white/10 p-0${spotlights[index].active ? ' active' : ''}`}
+                  style={{
+                    '--x': `${spotlights[index].x}px`,
+                    '--y': `${spotlights[index].y}px`,
+                  } as React.CSSProperties}
+                  onMouseMove={handleMouseMove(index)}
+                  onMouseLeave={handleMouseLeave(index)}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <VideoPlayer
+                    src={video.src}
+                    poster={video.poster}
+                    className="w-full rounded-t-2xl"
+                    controls
+                  />
+                  <div className="p-6">
+                    <h2 className="text-2xl font-semibold mb-2">{video.title}</h2>
+                    <p className="text-gray-300 text-base">{video.description}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
