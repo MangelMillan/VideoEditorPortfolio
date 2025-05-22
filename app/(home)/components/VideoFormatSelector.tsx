@@ -1,30 +1,28 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 
 const VideoFormatSelector = () => {
   const router = useRouter();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const lastUpdateRef = useRef(0);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      const now = Date.now();
+      if (now - lastUpdateRef.current < 50) return;
+      lastUpdateRef.current = now;
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
-      
       // Calculate normalized position (0-1)
       const x = clientX / innerWidth;
       const y = clientY / innerHeight;
-      
       // Update CSS custom properties
       document.documentElement.style.setProperty('--x', `${clientX}px`);
       document.documentElement.style.setProperty('--y', `${clientY}px`);
       document.documentElement.style.setProperty('--xp', `${x}`);
       document.documentElement.style.setProperty('--yp', `${y}`);
-      
-      setMousePosition({ x: clientX, y: clientY });
     };
-
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
@@ -32,8 +30,6 @@ const VideoFormatSelector = () => {
   const handleCardClick = (path: string) => {
     router.push(path);
   };
-
-  const titleWords = ["Choose", "one", "of", "the", "options", "below", "to", "watch", "the", "videos", "you're", "interested", "in:"];
 
   return (
     <>
@@ -44,7 +40,6 @@ const VideoFormatSelector = () => {
           --glow-size: 750px;
           --border-width: 1px;
         }
-
         .spotlight-card {
           position: relative;
           isolation: isolate;
@@ -52,7 +47,6 @@ const VideoFormatSelector = () => {
           border-radius: 20px;
           overflow: hidden;
         }
-
         .spotlight-card::before {
           content: '';
           position: absolute;
@@ -72,7 +66,6 @@ const VideoFormatSelector = () => {
           pointer-events: none;
           z-index: 2;
         }
-
         .spotlight-card::after {
           content: '';
           position: absolute;
@@ -85,17 +78,14 @@ const VideoFormatSelector = () => {
           filter: blur(var(--glow-size));
           z-index: 1;
         }
-
         .play-button-container {
           position: relative;
           z-index: 3;
           transition: transform 0.3s ease;
         }
-
         .spotlight-card:hover .play-button-container {
           transform: scale(1.1);
         }
-
         @media (max-width: 768px) {
           .card-left {
             width: 320px !important;
@@ -119,17 +109,8 @@ const VideoFormatSelector = () => {
       `}</style>
       <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
         <div className="flex flex-wrap justify-center">
-          {titleWords.map((word, index) => (
-            <span
-              key={index}
-              className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mx-1 sm:mx-2 my-1"
-              style={{
-                textShadow: '0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4)'
-              }}
-            >
-              {word}
-            </span>
-          ))}
+          <h1 className="text-4xl font-bold mb-4">Choose Your Format</h1>
+          <p className="text-lg text-gray-300">Select your preferred video format to continue</p>
         </div>
       </div>
       <div className="w-full flex justify-center items-center px-4">

@@ -83,15 +83,15 @@ const data: CarouselItem[] = [
     id: "1",
     category: "",
     title: "Creator: TayluSs",
-    src: "/videos/adtay.mp4",
+    videoId: "6PT0FgCcfug",
     content: <DummyContent />,
     isVideo: true
   },
   {
     id: "2",
     category: "",
-    title: "Creator: TayluSs",
-    videoId: "tHqZvpe_WHs",
+    title: "Creator: GreenerWear",
+    videoId: "289oaKJbw5o",
     content: <DummyContent />,
     isVideo: true
   },
@@ -106,8 +106,8 @@ const data: CarouselItem[] = [
   {
     id: "4",
     category: "",
-    title: "Creator: GreenerWear",
-    videoId: "289oaKJbw5o",
+    title: "Creator: TayluSs",
+    videoId: "tHqZvpe_WHs",
     content: <DummyContent />,
     isVideo: true
   },
