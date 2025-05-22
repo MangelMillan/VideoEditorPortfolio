@@ -58,6 +58,12 @@ const videos: VideoItem[] = [
     title: '',
     description: 'Visual name intros for games, music videos and more',
     src: '/videos/horizontal/intros.mp4',
+  },
+  {
+    id: '8',
+    title: '',
+    description: 'Visual name intros for games, music videos and more',
+    src: '/videos/horizontal/Zarandeado.mp4',
   }
 ];
 

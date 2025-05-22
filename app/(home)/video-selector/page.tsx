@@ -13,7 +13,7 @@ export default function VideoSelectorPage() {
     <div className="min-h-screen bg-black relative overflow-hidden ">
       <div className="bg-black/[0.96] antialiased bg-grid-white/[0.05] ">
         <Spotlight className="absolute top-0 left-0 h-[100%]" fill="white " />
-        <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 ">
+        <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 ">
           <Navbar />
           <VideoFormatSelector />
         </div>
