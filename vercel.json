@@ -1,11 +1,4 @@
 {
-  "analytics": true,
-  "speedInsights": {
-    "enabled": true
-  },
-  "github": {
-    "silent": true
-  },
   "headers": [
     {
       "source": "/(.*)",
