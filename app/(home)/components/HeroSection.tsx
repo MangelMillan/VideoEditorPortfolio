@@ -2,13 +2,12 @@
 import { motion } from "framer-motion";
 import { HeroHighlight, Highlight } from "@/components/ui/highlight";
 import { HoverBorderGradient } from "@/components/ui/hoverborder";
-import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
+import { Carousel, Card, CarouselItem } from "@/components/ui/apple-cards-carousel";
 import { FiDownload } from "react-icons/fi";
 import { FaRegEye, FaEye } from "react-icons/fa";
 import Link from "next/link";
 import { useState } from "react";
 import { YouTubeVideo } from "@/components/YouTubeVideo";
-
 
 const DummyContent = () => {
   return (
@@ -34,12 +33,6 @@ const DummyContent = () => {
 
 export function HeroSection() {
   const [eyeHover, setEyeHover] = useState(false);
-<<<<<<< HEAD
-  const cards = data.map((card, index) => (
-    <Card key={card.videoId} card={card} index={index} />
-  ));
-=======
->>>>>>> d3d3f5ee73212c83aa69af5ec1847d17160bfb5e
 
   return (
     <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0 ">
@@ -85,16 +78,12 @@ export function HeroSection() {
   );
 }
 
-const data = [
+const data: CarouselItem[] = [
   {
     id: "1",
     category: "",
     title: "Creator: TayluSs",
-<<<<<<< HEAD
-    videoId: "6PT0FgCcfug",
-=======
     src: "/videos/adtay.mp4",
->>>>>>> d3d3f5ee73212c83aa69af5ec1847d17160bfb5e
     content: <DummyContent />,
     isVideo: true
   },
