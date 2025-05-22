@@ -32,9 +32,6 @@ const DummyContent = () => {
 
 export function HeroSection() {
   const [eyeHover, setEyeHover] = useState(false);
-  const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
-  ));
 
   return (
     <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0">
@@ -73,8 +70,8 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex justify-center items-center h-full ">
-        <Carousel items={cards} />
+      <div className="w-full md:w-1/2 flex justify-center items-center h-full">
+        <Carousel items={data} />
       </div>
     </div>
   );
@@ -82,30 +79,37 @@ export function HeroSection() {
 
 const data = [
   {
+    id: "1",
     category: "",
     title: "Creator: TayluSs",
     src: "/videos/adtay.mp4",
-
     content: <DummyContent />,
+    isVideo: true
   },
  
   {
+    id: "2",
     category: "",
     title: "Creator: TayluSs",
     src: "/videos/Tayu.mp4",
     content: <DummyContent />,
+    isVideo: true
   },
   
   {
+    id: "3",
     category: "",
     title: "Creator: KaroEmpowerment",
     src: "/videos/Karo.mp4",
     content: <DummyContent />,
+    isVideo: true
   },
   {
+    id: "4",
     category: "",
     title: "Creator: GreenerWear",
     src: "/videos/Greener.mp4",
     content: <DummyContent />,
+    isVideo: true
   },
 ];
