@@ -35,7 +35,7 @@ export function HeroSection() {
   const [eyeHover, setEyeHover] = useState(false);
 
   return (
-    <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center h-screen overflow-hidden pt-20 md:pt-0 ">
+    <div className="relative hero-video-container flex flex-col md:flex-row justify-between items-center overflow-hidden pt-20 md:pt-0 ">
       <div className="absolute inset-0 backdrop-filter  backdrop-blur bg-gradient-to-circle from-transparent to-white opacity-50 pointer-events-none "></div>
       <div className="w-full md:w-1/2 ">
         <div className="text-3xl px-4 md:text-3xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto ">

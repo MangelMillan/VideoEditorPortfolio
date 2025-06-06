@@ -20,7 +20,6 @@ import {
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Image, { ImageProps } from "next/image";
-import { useOutsideClick } from "@/hooks/use-outside-click";
 import { YouTubeVideo } from "@/components/YouTubeVideo";
 
 export interface CarouselItem {
@@ -119,7 +118,7 @@ const CarouselVideo = memo(({ src }: { src: string }): JSX.Element => {
       style={{ willChange: 'transform' }}
       onLoadedData={(e) => {
         const video = e.target as HTMLVideoElement;
-        video.playbackRate = 0.5;
+        video.playbackRate = 1;
       }}
     />
   );
@@ -180,7 +179,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps): JSX.Eleme
           ref={carouselRef}
           onScroll={checkScrollability}
         >
-          <div className={cn("absolute right-0 z-[1000] h-auto w-[5%] overflow-hidden bg-gradient-to-l")}></div>
+          <div className={cn("absolute right-0 z-[1000]  w-[5%] overflow-hidden bg-gradient-to-l")}></div>
           <div className={cn("flex flex-row justify-start gap-4 pl-4", "max-w-7xl mx-auto")}>
             {items.map((item, index) => (
               <motion.div
@@ -203,7 +202,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps): JSX.Eleme
             ))}
           </div>
         </div>
-        <div className="flex justify-end gap-2 mr-4">
+        <div className="flex justify-end gap-2 mr-4 ">
           <CarouselArrowButton direction="left" onClick={scrollLeft} disabled={!canScrollLeft} />
           <CarouselArrowButton direction="right" onClick={scrollRight} disabled={!canScrollRight} />
         </div>
