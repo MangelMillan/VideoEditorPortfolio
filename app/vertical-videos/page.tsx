@@ -24,7 +24,7 @@ export default function VerticalVideosPage() {
     { id: 2, src: "/videos/vertical/kfn.mp4", title: "", description: "Popular dance", hashtags: ["dance"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 1200, comments: 80, shares: 50,  views: 2000 } },
     { id: 3, src: "/videos/vertical/Onestyle.mp4", title: "", description: "Tutorial", hashtags: ["tutorial"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 900, comments: 40, shares: 20, views: 1000 } },
     { id: 4, src: "/videos/3Nriku.mp4", title: "", description: "Funny clip", hashtags: ["funny"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 800, comments: 30, shares: 10, views: 800 } },
-    { id: 5, src: "/videos/Karo2.mp4", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
+    { id: 5, src: "/videos/vertical/Karo2.mp4", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
     { id: 6, src: "/videos/Demo Reel.mp4", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
   ];
 

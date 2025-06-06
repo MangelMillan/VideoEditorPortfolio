@@ -108,7 +108,7 @@ const VideoFormatSelector = () => {
         }
       `}</style>
       <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
-        <div className="flex flex-wrap justify-center">
+        <div className="flex flex-col items-center">
           <h1 className="text-4xl font-bold mb-4">Choose Your Format</h1>
           <p className="text-lg text-gray-300">Select your preferred video format to continue</p>
         </div>
