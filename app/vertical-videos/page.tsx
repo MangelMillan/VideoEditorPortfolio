@@ -15,8 +15,14 @@ export default function VerticalVideosPage() {
   const [activeVideo, setActiveVideo] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [origin, setOrigin] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRefs = useRef<(HTMLIFrameElement | null)[]>([]);
+
+  // Set origin on client side
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   // YouTube video IDs
   const videos = [
@@ -31,6 +37,8 @@ export default function VerticalVideosPage() {
 
   // Set up observer for videos
   useEffect(() => {
+    if (!origin) return; // Don't set up observer until we have the origin
+
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 10);
@@ -45,14 +53,14 @@ export default function VerticalVideosPage() {
               const iframe = iframeRefs.current[videoIndex];
               if (iframe) {
                 const videoId = videos[videoIndex].videoId;
-                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`;
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}&iv_load_policy=3&fs=0`;
               }
             } else {
               // Pause the video when it's not visible
               const iframe = iframeRefs.current[videoIndex];
               if (iframe) {
                 const videoId = videos[videoIndex].videoId;
-                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`;
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}&iv_load_policy=3&fs=0`;
               }
             }
           });
@@ -70,16 +78,18 @@ export default function VerticalVideosPage() {
       };
     }
     return () => clearTimeout(timer);
-  }, [isVisible, muted, videos]);
+  }, [isVisible, muted, videos, origin]);
 
   // Handle mute state changes
   useEffect(() => {
+    if (!origin) return; // Don't update iframe until we have the origin
+
     const iframe = iframeRefs.current[activeVideo];
     if (iframe) {
       const videoId = videos[activeVideo].videoId;
-      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`;
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}&iv_load_policy=3&fs=0`;
     }
-  }, [muted, activeVideo, videos]);
+  }, [muted, activeVideo, videos, origin]);
 
   // Format numbers (e.g. 4.6M)
   const formatNumber = (num: number) => {
@@ -135,25 +145,27 @@ export default function VerticalVideosPage() {
                         md:rounded-2xl md:shadow-2xl md:overflow-hidden"
                       style={{ aspectRatio: '9/16' }}
                     >
-                      <iframe
-                        ref={(el) => { iframeRefs.current[index] = el; }}
-                        src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=${muted ? 1 : 0}&loop=1&playlist=${video.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`}
-                        className="absolute inset-0 w-full h-full scale-[1.02]"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        loading="lazy"
-                        title={video.title || 'YouTube video player'}
-                        style={{
-                          border: 'none',
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          transform: 'scale(1.02)',
-                          pointerEvents: 'none'
-                        }}
-                      />
+                      {origin && (
+                        <iframe
+                          ref={(el) => { iframeRefs.current[index] = el; }}
+                          src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=${muted ? 1 : 0}&loop=1&playlist=${video.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}&iv_load_policy=3&fs=0`}
+                          className="absolute inset-0 w-full h-full scale-[1.02]"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          loading="lazy"
+                          title={video.title || 'YouTube video player'}
+                          style={{
+                            border: 'none',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            transform: 'scale(1.02)',
+                            pointerEvents: 'none'
+                          }}
+                        />
+                      )}
                       {/* Top overlays */}
                       <div className="absolute top-0 left-0 w-full flex justify-between items-start p-3 z-10">
                         <button
