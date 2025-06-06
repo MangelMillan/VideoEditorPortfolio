@@ -16,16 +16,17 @@ export default function VerticalVideosPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [muted, setMuted] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const iframeRefs = useRef<(HTMLIFrameElement | null)[]>([]);
 
-  // Example data - each item will use the same video for demonstration
+  // YouTube video IDs
   const videos = [
-    { id: 1, src: "/videos/vertical/Vertical.mp4", title: "", description: "Motion Graphics y videos", hashtags: ["Motion", "Premiere"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 46000, comments: 8400, shares: 2400, views: 183900 } },
-    { id: 2, src: "/videos/vertical/kfn.mp4", title: "", description: "Popular dance", hashtags: ["dance"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 1200, comments: 80, shares: 50,  views: 2000 } },
-    { id: 3, src: "/videos/vertical/Onestyle.mp4", title: "", description: "Tutorial", hashtags: ["tutorial"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 900, comments: 40, shares: 20, views: 1000 } },
-    { id: 4, src: "/videos/3Nriku.mp4", title: "", description: "Funny clip", hashtags: ["funny"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 800, comments: 30, shares: 10, views: 800 } },
-    { id: 5, src: "/videos/vertical/Karo2.mp4", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
-    { id: 6, src: "/videos/Demo Reel.mp4", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
+    { id: 1, videoId: "mO2YP4bsWmE", title: "", description: "Motion Graphics y videos", hashtags: ["Motion", "Premiere"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 46000, comments: 8400, shares: 2400, views: 183900 } },
+    { id: 2, videoId: "8-ms9xAHm4o", title: "", description: "Popular dance", hashtags: ["dance"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 1200, comments: 80, shares: 50,  views: 2000 } },
+    { id: 3, videoId: "Cdc1ZspnYM4", title: "", description: "Tutorial", hashtags: ["tutorial"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 900, comments: 40, shares: 20, views: 1000 } },
+    { id: 4, videoId: "dM1jglmRxIc", title: "", description: "Funny clip", hashtags: ["funny"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 800, comments: 30, shares: 10, views: 800 } },
+    { id: 5, videoId: "skdv-i_3TXE", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
+    { id: 6, videoId: "TD5JXKEP5uI", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
+    { id: 7, videoId: "00CaJUJDYRU", title: "", description: "Creative edit", hashtags: ["creative"], user: { name: "Maiki", avatar: "/img/inio.jpg" }, stats: { likes: 700, comments: 20, shares: 5,  views: 600 } },
   ];
 
   // Set up observer for videos
@@ -37,16 +38,21 @@ export default function VerticalVideosPage() {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            const videoElement = (entry.target as HTMLElement).querySelector('video');
             const videoIndex = parseInt((entry.target as HTMLElement).getAttribute('data-index') || '0');
             if (entry.isIntersecting) {
               setActiveVideo(videoIndex);
-              if (videoElement) {
-                videoElement.play().catch(() => {});
+              // Update iframe src to autoplay the current video
+              const iframe = iframeRefs.current[videoIndex];
+              if (iframe) {
+                const videoId = videos[videoIndex].videoId;
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`;
               }
             } else {
-              if (videoElement) {
-                videoElement.pause();
+              // Pause the video when it's not visible
+              const iframe = iframeRefs.current[videoIndex];
+              if (iframe) {
+                const videoId = videos[videoIndex].videoId;
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`;
               }
             }
           });
@@ -64,24 +70,16 @@ export default function VerticalVideosPage() {
       };
     }
     return () => clearTimeout(timer);
-  }, [isVisible]);
+  }, [isVisible, muted, videos]);
 
-  // Sync mute state
+  // Handle mute state changes
   useEffect(() => {
-    videoRefs.current.forEach((video, idx) => {
-      if (video) video.muted = muted;
-    });
-  }, [muted, activeVideo]);
-
-  // Handle manual scrolling to a video
-  const scrollToVideo = (index: number) => {
-    if (containerRef.current) {
-      const videoElements = containerRef.current.querySelectorAll('.video-item');
-      if (videoElements[index]) {
-        videoElements[index].scrollIntoView({ behavior: 'smooth' });
-      }
+    const iframe = iframeRefs.current[activeVideo];
+    if (iframe) {
+      const videoId = videos[activeVideo].videoId;
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${muted ? 1 : 0}&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`;
     }
-  };
+  }, [muted, activeVideo, videos]);
 
   // Format numbers (e.g. 4.6M)
   const formatNumber = (num: number) => {
@@ -112,7 +110,7 @@ export default function VerticalVideosPage() {
           {/* TikTok-style vertical scrolling container */}
           <div
             ref={containerRef}
-            className="h-[100vh] w-full overflow-y-scroll snap-y snap-mandatory flex flex-col items-center pt-16 md:pt-20 gap-y-8       "
+            className="h-[100vh] w-full overflow-y-scroll snap-y snap-mandatory flex flex-col items-center pt-16 md:pt-20 gap-y-8"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {videos.map((video, index) => (
@@ -122,9 +120,7 @@ export default function VerticalVideosPage() {
                 className={`video-item flex items-center justify-center snap-start snap-always w-full h-[100vh] ${isVisible ? 'opacity-100' : 'opacity-0'}`}
                 style={{ transition: 'opacity 0.5s ease' }}
               >
-                <div
-                  className="relative flex items-center justify-center w-full h-full"
-                >
+                <div className="relative flex items-center justify-center w-full h-full">
                   {/* Video container with overlays inside only */}
                   <div
                     className="relative w-full h-full flex items-center justify-center"
@@ -139,15 +135,24 @@ export default function VerticalVideosPage() {
                         md:rounded-2xl md:shadow-2xl md:overflow-hidden"
                       style={{ aspectRatio: '9/16' }}
                     >
-                      <video
-                        ref={(el) => { videoRefs.current[index] = el; }}
-                        src={video.src}
-                        className="object-cover w-full h-full"
-                        playsInline
-                        loop
-                        muted={muted}
-                        preload="auto"
-                        style={{ aspectRatio: '9/16' }}
+                      <iframe
+                        ref={(el) => { iframeRefs.current[index] = el; }}
+                        src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=${muted ? 1 : 0}&loop=1&playlist=${video.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}&iv_load_policy=3&fs=0`}
+                        className="absolute inset-0 w-full h-full scale-[1.02]"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        loading="lazy"
+                        title={video.title || 'YouTube video player'}
+                        style={{
+                          border: 'none',
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          transform: 'scale(1.02)',
+                          pointerEvents: 'none'
+                        }}
                       />
                       {/* Top overlays */}
                       <div className="absolute top-0 left-0 w-full flex justify-between items-start p-3 z-10">
@@ -157,9 +162,6 @@ export default function VerticalVideosPage() {
                           aria-label={muted ? 'Unmute' : 'Mute'}
                         >
                           {muted ? <HiOutlineSpeakerXMark className="w-6 h-6" /> : <HiOutlineSpeakerWave className="w-6 h-6" />}
-                        </button>
-                        <button className="bg-black/60 rounded-full p-2 text-white hover:bg-black/80 transition">
-                          <BsThreeDots className="w-6 h-6" />
                         </button>
                       </div>
                       {/* Caption overlay */}
@@ -190,7 +192,6 @@ export default function VerticalVideosPage() {
                               <span key={tag}>#{tag}</span>
                             ))}
                           </div>
-                          
                         </div>
                         {/* Action bar */}
                         <div className="flex flex-col items-center gap-4 ml-4">
